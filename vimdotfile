@@ -1,0 +1,47 @@
+set number 
+set linebreak 
+
+"Function to create a new journal entry for the current date 
+function! CreateJournalEntry()
+  let journal_path = "~/Journal/"
+  let entry_date = strftime("%Y-%m-%d")
+  let entry_time = strftime("%H:%M:%S")
+  let entry_filename = journal_path . entry_date . ".txt"
+"open a new entry file 
+execute "edit ". entry_filename
+call append(0, "Date: ". entry_date)
+call append(1,"Time: " .entry_time)
+normal! G
+endfunction 
+
+"Map a key to create a journal 
+map <Leader>j :call CreateJournalEntry()<CR>
+
+"Workout manager 
+function! CreateWorkoutLog()
+  let log_file = "~/workout_log.txt"
+  execute "edit ". log_file 
+endfunction
+
+"Add a new workout entry to the log 
+function! AddWorkoutEntry()
+  let date = strftime("%Y-%m-%d")
+  let time = strftime("%H:%M:%S")
+  let exercise = input("Enter the exercise name :")
+  let sets = input("Enter the number of sets : ")
+  let weight = input("Enter the weight : ")
+  let reps = input("Enter the no of reps :")
+"append the entry to the log file 
+call append(line('$'), date ."\t".time ."\t" .exercise . "\t".sets."\t".reps."\t".weight)
+endfunction
+
+"Map a key to call the Addworkout
+map <Leader>w :call AddWorkoutEntry()<CR>
+
+"Map a key to call the CreateWorkoutLog
+map <Leader>l :call CreateWorkoutLog()<CR>
+
+"Vim plug config 
+call plug#begin('~/.vimplugged')
+Plug 'beancount/vim-beancount'
+
